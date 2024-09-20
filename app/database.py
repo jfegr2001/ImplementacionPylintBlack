@@ -7,7 +7,16 @@ This module defines the database configuration and the models for orders and ord
 import os  # type: ignore
 from datetime import date  # type: ignore
 from dotenv import load_dotenv  # type: ignore
-from peewee import MySQLDatabase, Model, AutoField, IntegerField, DateField, FloatField, ForeignKeyField
+
+from peewee import (
+    AutoField,
+    DateField,
+    FloatField,
+    ForeignKeyField,
+    IntegerField,
+    Model,
+    MySQLDatabase,
+)
 
 
 # Cargar variables de entorno
