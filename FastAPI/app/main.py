@@ -3,7 +3,7 @@ Main application module for FastAPI.
 Includes routes for orders and order products.
 """
 
-# pylint: disable=E0401
+# pylint: disable=E0401,W0613
 
 # Standard imports
 from contextlib import asynccontextmanager
@@ -18,7 +18,6 @@ from routes.product_order_route import order_product_route
 from config.database import database as connection
 from helpers.api_key_auth import get_api_key
 
-
 app = FastAPI(
     title="Pylint microservice implementation",
     version="2.0",
@@ -27,27 +26,22 @@ app = FastAPI(
     },
 )
 
-
 @asynccontextmanager
-async def lifespan(app: FastAPI):
+async def lifespan(lifespan_app: FastAPI):
     """
     Handles the lifespan of the application, ensuring
     the database connection is open during the app's lifecycle.
     """
-    # Connect to the database if the connection is closed
     if connection.is_closed():
         connection.connect()
     try:
-        yield  # Application runs here
+        yield
     finally:
-        # Close the connection when the application stops
         if not connection.is_closed():
             connection.close()
 
-
 # Create the FastAPI app instance with custom lifespan management
 app = FastAPI(lifespan=lifespan)
-
 
 @app.get("/")
 async def docs():
@@ -55,7 +49,6 @@ async def docs():
     Redirects to the API documentation.
     """
     return RedirectResponse(url="/docs")
-
 
 # Include routers for orders and order products
 app.include_router(
